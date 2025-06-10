@@ -1,0 +1,60 @@
+server:
+  port: 8080
+spring:
+  cloud:
+    config:
+      enabled: false
+  application:
+    name: calculator-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/challenge-register
+    username: user
+    password: password
+    driver-class-name: org.postgresql.Driver
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  cache:
+    type: caffeine
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+logging:
+  level:
+    root: INFO
+    com.tenpo: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+# Caffeine cache config (TTL = 30 minutos)
+caffeine:
+  spec: maximumSize=100,expireAfterWrite=30m
+
+# Retry (si usas spring-retry)
+retry:
+  maxAttempts: 3
+  backoff:
+    delay: 1000
+    multiplier: 2
+cache:
+  percentage:
+    ttl: 1800
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
