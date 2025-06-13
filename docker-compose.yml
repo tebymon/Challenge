@@ -14,9 +14,15 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - tenpo-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:7
+    command: ["redis-server", "--protected-mode", "no"]
     container_name: tenpo_redis
     ports:
       - "6379:6379"
@@ -24,6 +30,24 @@ services:
       - redis_data:/data
     networks:
       - tenpo-network
+
+  api:
+    build: .
+    container_name: tenpo_challenge_api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/challenge-register
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+    ports:
+      - "8080:8080"
+    networks:
+      - tenpo-network
+    restart: on-failure
 
 volumes:
   postgres_data:

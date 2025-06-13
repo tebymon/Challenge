@@ -21,7 +21,7 @@ public class RateLimitingFilter implements Filter {
     private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
 
     private Bucket createNewBucket() {
-        Bandwidth limit = Bandwidth.classic(3, Refill.intervally(3, Duration.ofMinutes(1)));
+        Bandwidth limit = Bandwidth.classic(300, Refill.intervally(3, Duration.ofMinutes(1)));
         return Bucket.builder().addLimit(limit).build();
     }
 

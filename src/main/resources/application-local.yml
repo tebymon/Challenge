@@ -1,70 +1,17 @@
-server:
-  port: 8081
-
 spring:
-  cloud:
-    config:
-      enabled: false
-  application:
-    name: calculator-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/challenge-register
-    username: user
-    password: password
-    driver-class-name: org.postgresql.Driver
-  data:
-    redis:
-      host: localhost
-      port: 6379
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  redis:
+    host: ${SPRING_REDIS_HOST}
+    port: ${SPRING_REDIS_PORT}
   jpa:
     hibernate:
       ddl-auto: update
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-  cache:
-    type: caffeine
-  jackson:
-    serialization:
-      INDENT_OUTPUT: true
-
-logging:
-  level:
-    root: INFO
-    com.tenpo: INFO
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-
-# Configuración de Caffeine (TTL = 30 minutos)
-caffeine:
-  spec: maximumSize=100,expireAfterWrite=30m
-
-# Configuración de Resilience4j Retry
-resilience4j:
-  retry:
-    instances:
-      percentageRetry:
-        max-attempts: 3
-        wait-duration: 1s
-        retry-exceptions:
-          - java.io.IOException
-          - com.ecampos.challenge.infrastructure.exception.ProcessingException
-        ignore-exceptions:
-          - com.ecampos.challenge.infrastructure.exception.InvalidRequestException
-
-cache:
-  percentage:
-    ttl: 1800
-
-springdoc:
-  api-docs:
-    enabled: true
-  swagger-ui:
-    path: /swagger-ui.html
-    enabled: true
+  sql:
+    init:
+      mode: always
+server:
+  port: 8080
