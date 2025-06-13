@@ -1,5 +1,6 @@
 server:
-  port: 8080
+  port: 8081
+
 spring:
   cloud:
     config:
@@ -28,6 +29,7 @@ spring:
   jackson:
     serialization:
       INDENT_OUTPUT: true
+
 logging:
   level:
     root: INFO
@@ -39,19 +41,27 @@ management:
       exposure:
         include: '*'
 
-# Caffeine cache config (TTL = 30 minutos)
+# Configuración de Caffeine (TTL = 30 minutos)
 caffeine:
   spec: maximumSize=100,expireAfterWrite=30m
 
-# Retry (si usas spring-retry)
-retry:
-  maxAttempts: 3
-  backoff:
-    delay: 1000
-    multiplier: 2
+# Configuración de Resilience4j Retry
+resilience4j:
+  retry:
+    instances:
+      percentageRetry:
+        max-attempts: 3
+        wait-duration: 1s
+        retry-exceptions:
+          - java.io.IOException
+          - com.ecampos.challenge.infrastructure.exception.ProcessingException
+        ignore-exceptions:
+          - com.ecampos.challenge.infrastructure.exception.InvalidRequestException
+
 cache:
   percentage:
     ttl: 1800
+
 springdoc:
   api-docs:
     enabled: true

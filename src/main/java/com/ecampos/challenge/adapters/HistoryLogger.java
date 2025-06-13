@@ -1,10 +1,10 @@
 package com.ecampos.challenge.adapters;
 
-import com.ecampos.challenge.application.service.mapper.CalculationHistoryMapper;
-import com.ecampos.challenge.domain.service.HistoryLoggerPort;
-import com.ecampos.challenge.dto.CalculationHistoryDto;
-import com.ecampos.challenge.infrastructure.persistence.CalculationHistoryEntity;
-import com.ecampos.challenge.infrastructure.persistence.CalculationHistoryRepository;
+import com.ecampos.challenge.application.usecase.mapper.CalculationHistoryMapper;
+import com.ecampos.challenge.domain.port.out.HistoryLoggerPort;
+import com.ecampos.challenge.adapters.in.rest.dto.CalculationHistoryDto;
+import com.ecampos.challenge.adapters.out.persistence.CalculationHistoryEntity;
+import com.ecampos.challenge.adapters.out.persistence.CalculationHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

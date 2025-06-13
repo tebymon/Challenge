@@ -1,11 +1,12 @@
 package com.ecampos.challenge.infrastructure.client;
 
+import com.ecampos.challenge.adapters.out.client.PercentageClient;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
 @Component
-public class MockPercentageClient implements PercentageClient{
+public class MockPercentageClient implements PercentageClient {
 
     @Override
     public BigDecimal getPercentage() {
